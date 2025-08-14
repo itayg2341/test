@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { BookRepository } from "../repositories/bookRepository.js";
-import { BookInput } from "../models/book.js";
+import { BookRepository } from "../repositories/bookRepository";
+import { BookInput } from "../models/book";
 
 const router = Router();
 const bookRepository = new BookRepository();
