@@ -1,6 +1,6 @@
 import request from "supertest";
-import app from "../app";
-import { __resetBooks } from "../repositories/bookRepository";
+import app from "../app.js";
+import { __resetBooks } from "../repositories/bookRepository.js";
 
 describe("Book Routes", () => {
   beforeEach(() => {

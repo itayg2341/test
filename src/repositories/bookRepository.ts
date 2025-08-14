@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { Book, BookInput } from "../models/book";
+import { Book, BookInput } from "../models/book.js";
 
 const books: Book[] = [];
 
