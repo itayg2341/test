@@ -1,14 +1,10 @@
 import request from "supertest";
 import app from "../app.js";
-import { BookRepository } from "../repositories/bookRepository.js";
+import { __resetBooks } from "../repositories/bookRepository.js";
 
 describe("Book Routes", () => {
-  let bookRepository: BookRepository;
-
   beforeEach(() => {
-    bookRepository = new BookRepository();
-    // Reset books before each test
-    bookRepository.findAll().length = 0;
+    __resetBooks();
   });
 
   it("should create a new book", async () => {
@@ -31,12 +27,12 @@ describe("Book Routes", () => {
   });
 
   it("should get all books", async () => {
-    bookRepository.create({
+    await request(app).post("/books").send({
       title: "Test Book 1",
       author: "Test Author 1",
       isbn: "111",
     });
-    bookRepository.create({
+    await request(app).post("/books").send({
       title: "Test Book 2",
       author: "Test Author 2",
       isbn: "222",
@@ -48,23 +44,27 @@ describe("Book Routes", () => {
   });
 
   it("should get a book by id", async () => {
-    const newBook = bookRepository.create({
+    const createRes = await request(app).post("/books").send({
       title: "Test Book",
       author: "Test Author",
       isbn: "123",
     });
-    const res = await request(app).get(`/books/${newBook.id}`);
+    const newBookId = createRes.body.id;
+
+    const res = await request(app).get(`/books/${newBookId}`);
     expect(res.statusCode).toEqual(200);
-    expect(res.body.id).toBe(newBook.id);
+    expect(res.body.id).toBe(newBookId);
   });
 
   it("should update a book", async () => {
-    const newBook = bookRepository.create({
+    const createRes = await request(app).post("/books").send({
       title: "Test Book",
       author: "Test Author",
       isbn: "123",
     });
-    const res = await request(app).put(`/books/${newBook.id}`).send({
+    const newBookId = createRes.body.id;
+
+    const res = await request(app).put(`/books/${newBookId}`).send({
       title: "Updated Book",
       author: "Updated Author",
       isbn: "456",
@@ -74,15 +74,18 @@ describe("Book Routes", () => {
   });
 
   it("should delete a book", async () => {
-    const newBook = bookRepository.create({
+    const createRes = await request(app).post("/books").send({
       title: "Test Book",
       author: "Test Author",
       isbn: "123",
     });
-    const res = await request(app).delete(`/books/${newBook.id}`);
+    const newBookId = createRes.body.id;
+
+    const res = await request(app).delete(`/books/${newBookId}`);
     expect(res.statusCode).toEqual(204);
 
-    const getRes = await request(app).get(`/books/${newBook.id}`);
+    const getRes = await request(app).get(`/books/${newBookId}`);
     expect(getRes.statusCode).toEqual(404);
   });
 });
+
