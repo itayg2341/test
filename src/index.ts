@@ -1,5 +1,8 @@
-async function main() {
-  console.log("hello world");
-}
+import app from "./app.js";
 
-main().catch(console.error);
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
