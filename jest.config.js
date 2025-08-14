@@ -1,5 +1,6 @@
 export default {
   preset: "ts-jest/presets/js-with-ts-esm",
+  moduleDirectories: ["node_modules", "src"],
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
   },
