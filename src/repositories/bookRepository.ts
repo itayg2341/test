@@ -3,6 +3,10 @@ import { Book, BookInput } from "../models/book.js";
 
 const books: Book[] = [];
 
+export function __resetBooks() {
+  books.length = 0;
+}
+
 export class BookRepository {
   findAll(): Book[] {
     return books;
@@ -37,3 +41,4 @@ export class BookRepository {
     return true;
   }
 }
+
